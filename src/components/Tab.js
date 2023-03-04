@@ -1,28 +1,24 @@
 import { useState } from "react";
 import "../App.css";
 import TabContent from "./TabContent";
+import TabMenu from "./TabMenu";
 
 function Tab() {
-  const [activeTab, setActiveTab] = useState("overview");
+  const TAB_NAMES = [
+    { id: "overview", label: "Overview" },
+    { id: "history", label: "History" },
+  ];
+  const [activeTab, setActiveTab] = useState(TAB_NAMES[0].id);
   const onTabClick = (tabName) => {
     setActiveTab(tabName);
   };
   return (
     <div className="tab">
-      <ul className="tabs-list">
-        <li
-          onClick={() => onTabClick("overview")}
-          className={`tab-item ${activeTab === "overview" ? "active-tab" : ""}`}
-        >
-          Overview
-        </li>
-        <li
-          onClick={() => onTabClick("history")}
-          className={`tab-item ${activeTab === "history" ? "active-tab" : ""}`}
-        >
-          History
-        </li>
-      </ul>
+      <TabMenu
+        onTabClick={onTabClick}
+        activeTab={activeTab}
+        tabNames={TAB_NAMES}
+      />
       <TabContent content={activeTab} />
     </div>
   );
