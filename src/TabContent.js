@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import "./App.css";
 import TimeframeSelector from "./TimeframeSelector";
 import Overview from "./Overview";
@@ -15,15 +15,33 @@ function TabContent({ content }) {
   const [endTime, setEndTime] = useState(moment().format("MM/DD/YYYY%20HH:mm"));
 
   const [stockData, setStockData] = useState([]);
+  const cache = useRef({});
   useEffect(() => {
-    fetch(
-      `https://test.fxempire.com/api/v1/en/stocks/chart/candles?Identifier=AAPL.XNAS&IdentifierType=Symbol&AdjustmentMethod=All&IncludeExtended=False&period=${period}&Precision=${precision}&StartTime=${startTime}&EndTime=${endTime}&_fields=ChartBars.StartDate,ChartBars.High,ChartBars.Low,ChartBars.StartTime,ChartBars.Open,ChartBars.Close,ChartBars.Volume`
-    )
-      .then((response) => response.json())
-      .then((result) => {
-        setStockData(result);
-      });
-  }, [period, precision, startTime, endTime, stockData]);
+    if (
+      !cache.current[
+        `https://test.fxempire.com/api/v1/en/stocks/chart/candles?Identifier=AAPL.XNAS&IdentifierType=Symbol&AdjustmentMethod=All&IncludeExtended=False&period=${period}&Precision=${precision}&StartTime=${startTime}&EndTime=${endTime}&_fields=ChartBars.StartDate,ChartBars.High,ChartBars.Low,ChartBars.StartTime,ChartBars.Open,ChartBars.Close,ChartBars.Volume`
+      ]
+    ) {
+      // API CALL
+      fetch(
+        `https://test.fxempire.com/api/v1/en/stocks/chart/candles?Identifier=AAPL.XNAS&IdentifierType=Symbol&AdjustmentMethod=All&IncludeExtended=False&period=${period}&Precision=${precision}&StartTime=${startTime}&EndTime=${endTime}&_fields=ChartBars.StartDate,ChartBars.High,ChartBars.Low,ChartBars.StartTime,ChartBars.Open,ChartBars.Close,ChartBars.Volume`
+      )
+        .then((response) => response.json())
+        .then((result) => {
+          cache.current[
+            `https://test.fxempire.com/api/v1/en/stocks/chart/candles?Identifier=AAPL.XNAS&IdentifierType=Symbol&AdjustmentMethod=All&IncludeExtended=False&period=${period}&Precision=${precision}&StartTime=${startTime}&EndTime=${endTime}&_fields=ChartBars.StartDate,ChartBars.High,ChartBars.Low,ChartBars.StartTime,ChartBars.Open,ChartBars.Close,ChartBars.Volume`
+          ] = result;
+          setStockData(result);
+        });
+    } else {
+      // GET FROM CACHE
+      setStockData(
+        cache.current[
+          `https://test.fxempire.com/api/v1/en/stocks/chart/candles?Identifier=AAPL.XNAS&IdentifierType=Symbol&AdjustmentMethod=All&IncludeExtended=False&period=${period}&Precision=${precision}&StartTime=${startTime}&EndTime=${endTime}&_fields=ChartBars.StartDate,ChartBars.High,ChartBars.Low,ChartBars.StartTime,ChartBars.Open,ChartBars.Close,ChartBars.Volume`
+        ]
+      );
+    }
+  }, [period, precision, startTime, endTime]);
 
   const handleTimeframeChange = (timeFrameString) => {
     let period;
@@ -53,8 +71,8 @@ function TabContent({ content }) {
       default:
     }
     setPeriod(period);
-    setPrecision("Minutes");
-    setstartTime(moment().subtract(1, "Weeks").format("MM/DD/YYYY%20HH:mm"));
+    setPrecision(precision);
+    setstartTime(moment().subtract(1, timeSpan).format("MM/DD/YYYY%20HH:mm"));
     setEndTime(moment().format("MM/DD/YYYY%20HH:mm"));
   };
 
