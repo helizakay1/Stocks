@@ -1,8 +1,9 @@
 import { useState } from "react";
 import "./App.css";
+import TabContent from "./TabContent";
 
 function Tab() {
-  const [activeTab, setActiveTab] = useState("history");
+  const [activeTab, setActiveTab] = useState("overview");
   const onTabClick = (tabName) => {
     setActiveTab(tabName);
   };
@@ -22,6 +23,7 @@ function Tab() {
           History
         </li>
       </ul>
+      <TabContent content={activeTab} />
     </div>
   );
 }
