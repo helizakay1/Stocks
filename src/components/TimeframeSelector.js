@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./App.css";
+import "../App.css";
 
 function TimeframeSelector({ handleTimeframeChange }) {
   const [activeTimeframe, setActiveTimeframe] = useState("1-minute");
@@ -38,17 +38,6 @@ function TimeframeSelector({ handleTimeframeChange }) {
           }}
         >
           1 Hour
-        </li>
-        <li
-          className={`timeframe-item ${
-            activeTimeframe === "1-week" ? "timeframe-item--active" : ""
-          }`}
-          onClick={() => {
-            setActiveTimeframe("1-week");
-            handleTimeframeChange("1-week");
-          }}
-        >
-          1 Week
         </li>
       </ul>
     </div>

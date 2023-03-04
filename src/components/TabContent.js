@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import "./App.css";
+import "../App.css";
 import TimeframeSelector from "./TimeframeSelector";
 import Overview from "./Overview";
 import History from "./History";
@@ -10,10 +10,10 @@ function TabContent({ content }) {
   const [precision, setPrecision] = useState("Minutes");
 
   const [startTime, setstartTime] = useState(
-    moment().subtract(1, "week").format("MM/DD/YYYY%20HH:mm")
+    moment().subtract(1, "hour").format("MM/DD/YYYY%20HH:mm")
   );
   const [endTime, setEndTime] = useState(moment().format("MM/DD/YYYY%20HH:mm"));
-
+  const [timeSpan, setTimeSpan] = useState("day");
   const [stockData, setStockData] = useState([]);
   const cache = useRef({});
   useEffect(() => {
@@ -47,31 +47,25 @@ function TabContent({ content }) {
     let period;
     let precision;
     let timeSpan;
+    period = 1;
     switch (timeFrameString) {
       case "1-minute":
-        period = 1;
         precision = "Minutes";
-        timeSpan = "hour";
-        break;
-      case "5-minute":
-        period = 5;
-        precision = "Minutes";
-        timeSpan = "hour";
-        break;
-      case "1-hour":
-        period = 1;
-        precision = "Hours";
         timeSpan = "day";
         break;
-      case "1-week":
-        period = 1;
-        precision = "Weeks";
-        timeSpan = "month";
+      case "5-minute":
+        precision = "Minutes";
+        timeSpan = "day";
+        break;
+      case "1-hour":
+        precision = "Hours";
+        timeSpan = "week";
         break;
       default:
     }
     setPeriod(period);
     setPrecision(precision);
+    setTimeSpan(timeSpan);
     setstartTime(moment().subtract(1, timeSpan).format("MM/DD/YYYY%20HH:mm"));
     setEndTime(moment().format("MM/DD/YYYY%20HH:mm"));
   };
@@ -80,7 +74,9 @@ function TabContent({ content }) {
     <div className="tab-content">
       <TimeframeSelector handleTimeframeChange={handleTimeframeChange} />
       <div className="tab-component">
-        {content === "overview" && <Overview data={stockData} />}
+        {content === "overview" && (
+          <Overview data={stockData} timeSpan={timeSpan} />
+        )}
         {content === "history" && <History data={stockData} />}
       </div>
     </div>

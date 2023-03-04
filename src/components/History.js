@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./App.css";
+import "../App.css";
 import moment from "moment";
 import { BsTriangleFill } from "react-icons/bs";
 

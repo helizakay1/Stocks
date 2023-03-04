@@ -2,7 +2,7 @@
   padding: 20px;
 }
 
-p, ul {
+p, ul, h1, h2, h3 {
   margin: 0
 }
 
@@ -38,7 +38,7 @@ ul {
 }
 
 .change {
-  color: #75AD4A;
+  color: #457521;
   font-size: 25px;
   font-weight: 600;
   font-weight: 600;
@@ -62,7 +62,7 @@ ul {
 }
 
 .triangle-icon {
-  color: #75AD4A;
+  color: #457521;
   font-size: 25px;
   position: absolute;
   left:0;
@@ -86,8 +86,8 @@ ul {
 }
 
 .active-tab {
-  color:#184983;
-  border-bottom: #184983 solid 2px;
+  color:#35629a;
+  border-bottom: #35629a solid 2px;
 }
 
 .red {

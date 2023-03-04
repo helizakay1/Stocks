@@ -1,8 +1,8 @@
-import "./App.css";
+import "../App.css";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
-function Overview({ data }) {
+function Overview({ data, timeSpan }) {
   const options = {
     title: {
       text: "",
@@ -11,6 +11,9 @@ function Overview({ data }) {
       title: {
         text: "",
       },
+    },
+    xAxis: {
+      categories: data.map((item) => `${item.StartDate} ${item.StartTime}`),
     },
     legend: {
       enabled: false,
@@ -30,7 +33,7 @@ function Overview({ data }) {
       {data.length > 0 ? (
         <HighchartsReact highcharts={Highcharts} options={options} />
       ) : (
-        <p className="no-data">No data to show</p>
+        <p className="no-data">{`No updates on the last ${timeSpan}`}</p>
       )}
     </div>
   );
