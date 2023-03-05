@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "../App.css";
 import moment from "moment";
-import { BsTriangleFill } from "react-icons/bs";
+import { VscTriangleUp, VscTriangleDown } from "react-icons/vsc";
 
 function History({ data }) {
   const [sortKey, setSortKey] = useState("Date");
@@ -40,9 +40,9 @@ function History({ data }) {
             {TABLE_COLUMNS.map((col, index) => (
               <th key={index}>
                 <div className="flex-row">
-                  <span>{col}</span>
+                  <span className="col-label">{col}</span>
                   <span className="flex-col">
-                    <BsTriangleFill
+                    <VscTriangleUp
                       onClick={() => {
                         setSortDirection(true);
                         setSortKey(col);
@@ -51,12 +51,12 @@ function History({ data }) {
                         sortKey === col && sortDirection ? "" : "grey"
                       }`}
                     />
-                    <BsTriangleFill
+                    <VscTriangleDown
                       onClick={() => {
                         setSortDirection(false);
                         setSortKey(col);
                       }}
-                      className={`clickable reverse ${
+                      className={`clickable ${
                         sortKey === col && !sortDirection ? "" : "grey"
                       }`}
                     />
