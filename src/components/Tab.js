@@ -2,11 +2,12 @@ import { useState } from "react";
 import "../App.css";
 import TabContent from "./TabContent";
 import TabMenu from "./TabMenu";
+import { TabsEnum } from "../constants/tabs";
 
 function Tab() {
   const TAB_NAMES = [
-    { id: "overview", label: "Overview" },
-    { id: "history", label: "History" },
+    { id: TabsEnum.Overview, label: "Overview" },
+    { id: TabsEnum.History, label: "History" },
   ];
   const [activeTab, setActiveTab] = useState(TAB_NAMES[0].id);
   const onTabClick = (tabName) => {

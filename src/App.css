@@ -38,7 +38,6 @@ ul {
 }
 
 .change {
-  color: #457521;
   font-size: 25px;
   font-weight: 600;
   font-weight: 600;
@@ -62,7 +61,6 @@ ul {
 }
 
 .triangle-icon {
-  color: #457521;
   font-size: 25px;
   position: absolute;
   left:0;
@@ -92,6 +90,10 @@ ul {
 
 .red {
   color: red;
+}
+
+.green {
+  color: #457521;
 }
 
 .timeframe-item {

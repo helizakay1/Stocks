@@ -5,15 +5,15 @@ import moment from "moment";
 
 function Header() {
   const PAGE_TITLE = "Apple Inc";
+  const WEB_SOCKET_URL = "wss://wstest.fxempire.com?token=btctothemoon";
+
   const [data, setData] = useState({
     last: "",
   });
   const ws = useRef(null); // web socket ref
   useEffect(() => {
     if (!ws.current) {
-      let socket = new WebSocket(
-        "wss://wstest.fxempire.com?token=btctothemoon"
-      );
+      let socket = new WebSocket(WEB_SOCKET_URL);
 
       socket.onopen = () => {
         socket.send(
@@ -36,35 +36,39 @@ function Header() {
     }
   }, []);
 
+  const toUTCString = (time) => {
+    return `${moment(time).utc().format("MMM DD, YYYY HH:mm")} UTC`;
+  };
+
+  const toStringWithSign = (number) => {
+    return +number > 0 ? `+${number}` : number;
+  };
+
   return (
     <div className="header">
       <div className="left-container">
         <h1 className="title">{PAGE_TITLE}</h1>
-        <h3 className="last-updated">
-          {`As of: ${moment(data.lastUpdate)
-            .utc()
-            .format("MMM DD, YYYY HH:mm")} UTC`}
-        </h3>
+        {data?.lastUpdate && (
+          <h3 className="last-updated">
+            {`As of: ${toUTCString(data.lastUpdate)} `}
+          </h3>
+        )}
       </div>
       <div className="right-container">
-        <h1 className="price">{data?.last}</h1>
-        <BsTriangleFill
-          className={`triangle-icon ${+data?.change < 0 ? "reverse red" : ""}`}
-        />
-        <h2
-          className={`change change-abolute ${+data?.change < 0 ? "red" : ""}`}
-        >
-          {+data?.change > 0 ? `+${data?.change}` : data?.change}
-        </h2>
-        <h2
-          className={`change change-percent ${+data?.change < 0 ? "red" : ""}`}
-        >
-          (
-          {+data?.percentChange > 0
-            ? `+${data?.percentChange}`
-            : data?.percentChange}
-          %)
-        </h2>
+        {data?.last && <h1 className="price">{data.last}</h1>}
+        {data?.change && (
+          <div className={`${+data.change > 0 ? "green" : "red"}`}>
+            <BsTriangleFill
+              className={`triangle-icon ${+data.change < 0 ? "reverse" : ""}`}
+            />
+            <h2 className="change change-abolute">
+              {toStringWithSign(+data.change)}
+            </h2>
+            <h2 className="change change-percent">
+              {`${toStringWithSign(+data.percentChange)}%`}
+            </h2>
+          </div>
+        )}
       </div>
     </div>
   );

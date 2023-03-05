@@ -3,6 +3,11 @@ import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
 function Overview({ data, timeSpan }) {
+  const XAxisCategories = data.map(
+    (item) => `${item.StartDate} ${item.StartTime}`
+  );
+  const seriesData = data.map((item) => item.Close);
+
   const options = {
     title: {
       text: "",
@@ -13,14 +18,14 @@ function Overview({ data, timeSpan }) {
       },
     },
     xAxis: {
-      categories: data.map((item) => `${item.StartDate} ${item.StartTime}`),
+      categories: XAxisCategories,
     },
     legend: {
       enabled: false,
     },
     series: [
       {
-        data: data.map((item) => item.Close),
+        data: seriesData,
       },
     ],
     accessibility: {
